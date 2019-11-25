@@ -30,8 +30,7 @@ config :dropbox_api,
   token_url: System.get_env("DROPBOX_TOKEN_URL") || "https://api.dropbox.com/oauth2/token",
   app_key: System.get_env("DROPBOX_APP_KEY"),
   app_secret: System.get_env("DROPBOX_APP_SECRET"),
-  redirect_url: System.get_env("DROPBOX_APP_REDIRECT"),
-  authenticate_timeout: String.to_integer(System.get_env("DROPBOX_AUTHENTICATE_TIMEOUT") || "60000")
+  redirect_url: System.get_env("DROPBOX_APP_REDIRECT")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

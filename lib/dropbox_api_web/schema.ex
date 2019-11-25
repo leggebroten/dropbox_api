@@ -1,16 +1,15 @@
 defmodule DropboxApiWeb.Schema do
   use Absinthe.Schema
 
-  import_types Absinthe.Type.Custom
-  import_types DropboxApiWeb.Schema.AuthTypes
+  import_types(Absinthe.Type.Custom)
+  import_types(DropboxApiWeb.Schema.AuthTypes)
 
   alias DropboxApi.Resolvers
 
   query do
-
     @desc "Authorization URL needed to have user authorize this app's access to their Dropbox"
     field :authorization, :authorization_payload do
-      resolve &Resolvers.Auth.authorization/3
+      resolve(&Resolvers.Auth.authorization/3)
     end
   end
 

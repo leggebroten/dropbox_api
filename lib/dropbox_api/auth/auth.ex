@@ -16,14 +16,14 @@ defmodule DropboxApi.Auth do
   @doc """
   Pass the authorization_code to Dropbox to obtain a Bearer token
   """
-  def authenticate(authorization_code) do
+   def authenticate(conn) do
     body =
-      %{code: authorization_code, grant_type: "authorization_code", redirect_uri: redirect_url()}
+      %{code: conn.params["code"], grant_type: "authorization_code", redirect_uri: redirect_url()}
       |> URI.encode_query()
 
     header = [
       {"Content-Type", "application/x-www-form-urlencoded"},
-      {"Authorization", "Basic OGt3bHJidWk5NWNxeDY2OnUxcGt1MGFycW9pb29raA=="}
+      {"Authorization", "Basic #{auth_key_encoded()}"}
     ]
 
     case post(dropbox_token_url(), body, header) do
@@ -36,7 +36,7 @@ defmodule DropboxApi.Auth do
     end
   end
 
-  def token(%{"access_token" => token}), do: token
+  def access_token(%{"access_token" => token}), do: token
   def uid(%{"uid" => uid}), do: uid
   def account_id(%{"account_id" => account_id}), do: account_id
 
@@ -49,5 +49,8 @@ defmodule DropboxApi.Auth do
   defp app_key, do: Application.fetch_env!(:dropbox_api, :app_key)
   defp app_secret, do: Application.fetch_env!(:dropbox_api, :app_secret)
   defp redirect_url, do: Application.fetch_env!(:dropbox_api, :redirect_url)
-  defp authenticate_timeout, do: Application.fetch_env!(:dropbox_api, :authenticate_timeout)
+  defp auth_key_encoded do
+    "#{app_key()}:#{app_secret()}"
+    |> Base.encode64()
+  end
 end

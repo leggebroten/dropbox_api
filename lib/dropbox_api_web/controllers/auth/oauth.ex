@@ -12,11 +12,12 @@ defmodule DropboxApiWeb.OAuth do
   end
 
   def oauthredirect(conn, _) do
-    case Auth.authenticate(conn.params["code"]) do
+    case Auth.authenticate(conn) do
       {:ok, auth} ->
-        token = Auth.token(auth)
-        conn = Plug.Conn.put_resp_cookie(conn, "bearer_token", token)
+        access_token = Auth.access_token(auth)
+        conn = Plug.Conn.put_resp_cookie(conn, "bearer_token", access_token)
 
+        # todo get web url from original request
         redirect(conn, external: "http://localhost:8000")
 
       {:error, error} ->

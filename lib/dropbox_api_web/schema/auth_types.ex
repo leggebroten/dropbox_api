@@ -10,6 +10,8 @@ defmodule DropboxApiWeb.Schema.AuthTypes do
   end
 
   object :authenticate_payload do
-    field :token, non_null(:string)
+    field :access_token, non_null(:string)
+    field :account_id, non_null(:string)
+    field :uid, non_null(:string)
   end
 end
